@@ -15,19 +15,22 @@ import { EmptyState } from "@/components/shared/empty-state";
 import { CategoryIcon } from "@/components/activity/category-icon";
 import { TransactionRow } from "@/components/activity/transaction-row";
 import { useBank } from "@/lib/store";
-import { accountById, depositAccounts } from "@/lib/selectors";
+import { accountById } from "@/lib/selectors";
+import { useDepositAccounts, useTransactions } from "@/lib/hooks";
 import { dueLabel, formatDate, money } from "@/lib/utils";
 
 export default function BillDetailPage() {
   const { id } = useParams<{ id: string }>();
   const bill = useBank((s) => s.bills.find((b) => b.id === id));
   const account = useBank((s) => (bill ? accountById(s, bill.accountId) : undefined));
-  const accounts = useBank(depositAccounts);
+  const accounts = useDepositAccounts();
   const payBill = useBank((s) => s.payBill);
   const toggleAutopay = useBank((s) => s.toggleAutopay);
   const setBillAccount = useBank((s) => s.setBillAccount);
-  const history = useBank((s) =>
-    bill ? s.transactions.filter((t) => t.merchant === bill.name).slice(0, 6) : []
+  const allTransactions = useTransactions();
+  const history = React.useMemo(
+    () => (bill ? allTransactions.filter((t) => t.merchant === bill.name).slice(0, 6) : []),
+    [allTransactions, bill]
   );
 
   const [paying, setPaying] = React.useState(false);

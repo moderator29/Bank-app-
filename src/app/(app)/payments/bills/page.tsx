@@ -12,13 +12,14 @@ import { Segmented } from "@/components/ui/segmented";
 import { EmptyState } from "@/components/shared/empty-state";
 import { CategoryIcon } from "@/components/activity/category-icon";
 import { useBank } from "@/lib/store";
-import { billTotalDue, paidBills, upcomingBills } from "@/lib/selectors";
+import { billTotalDue } from "@/lib/selectors";
+import { usePaidBills, useUpcomingBills } from "@/lib/hooks";
 import { dueLabel, formatDate, money } from "@/lib/utils";
 import type { Bill } from "@/lib/types";
 
 export default function BillsPage() {
-  const upcoming = useBank(upcomingBills);
-  const paid = useBank(paidBills);
+  const upcoming = useUpcomingBills();
+  const paid = usePaidBills();
   const accounts = useBank((s) => s.accounts);
   const addBill = useBank((s) => s.addBill);
   const hidden = useBank((s) => s.balanceHidden);

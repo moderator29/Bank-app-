@@ -14,7 +14,7 @@ import { PickRow } from "@/components/ui/pick-row";
 import { Avatar } from "@/components/ui/avatar";
 import { EmptyState } from "@/components/shared/empty-state";
 import { useBank } from "@/lib/store";
-import { depositAccounts } from "@/lib/selectors";
+import { useDepositAccounts } from "@/lib/hooks";
 import { money, relativeDay } from "@/lib/utils";
 
 const QUICK = [25, 50, 100, 250];
@@ -24,7 +24,7 @@ export default function SendMoneyPage() {
   const preselected = params.get("payee");
 
   const payees = useBank((s) => s.payees);
-  const accounts = useBank(depositAccounts);
+  const accounts = useDepositAccounts();
   const sendMoney = useBank((s) => s.sendMoney);
   const addPayee = useBank((s) => s.addPayee);
 

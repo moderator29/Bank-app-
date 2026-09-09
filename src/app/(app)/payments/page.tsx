@@ -16,12 +16,8 @@ import { Surface, SectionHeader, Chip, IconTile } from "@/components/ui/surface"
 import { ListGroup, ListRow } from "@/components/ui/list";
 import { Avatar } from "@/components/ui/avatar";
 import { useBank } from "@/lib/store";
-import {
-  activeSchedules,
-  billTotalDue,
-  monthlyRecurringTotal,
-  upcomingBills,
-} from "@/lib/selectors";
+import { billTotalDue, monthlyRecurringTotal } from "@/lib/selectors";
+import { useActiveSchedules, useUpcomingBills } from "@/lib/hooks";
 import { dueLabel, formatDate, money } from "@/lib/utils";
 
 const PRIMARY = [
@@ -52,8 +48,8 @@ const PRIMARY = [
 ];
 
 export default function PaymentsPage() {
-  const bills = useBank(upcomingBills);
-  const schedules = useBank(activeSchedules);
+  const bills = useUpcomingBills();
+  const schedules = useActiveSchedules();
   const recurring = useBank(monthlyRecurringTotal);
   const payees = useBank((s) => s.payees);
   const hidden = useBank((s) => s.balanceHidden);

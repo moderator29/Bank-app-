@@ -12,6 +12,7 @@ import { TransactionRow } from "@/components/activity/transaction-row";
 import { Surface, SectionHeader } from "@/components/ui/surface";
 import { useBank } from "@/lib/store";
 import { primaryAccount } from "@/lib/selectors";
+import { useRecentTransactions } from "@/lib/hooks";
 import { firstName, formatDate, greeting } from "@/lib/utils";
 
 export default function HomePage() {
@@ -19,7 +20,7 @@ export default function HomePage() {
   const accounts = useBank((s) => s.accounts);
   const primary = useBank(primaryAccount);
   const hidden = useBank((s) => s.balanceHidden);
-  const recent = useBank((s) => s.transactions.slice(0, 6));
+  const recent = useRecentTransactions(6);
   const others = accounts.filter((a) => a.id !== primary.id);
 
   return (
@@ -35,14 +36,14 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-start">
-          <div className="space-y-6">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:items-start">
+          <div className="min-w-0 space-y-6">
             <BalanceHero />
             <QuickActions />
             <Snapshot />
           </div>
 
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-6">
             <Upcoming />
 
             {others.length > 0 && (
@@ -66,10 +67,10 @@ export default function HomePage() {
               </section>
             )}
 
-            <Surface index={5} variant="sunken" className="overflow-hidden">
+            <Surface index={5} variant="glass" className="overflow-hidden">
               <Link
                 href="/insights"
-                className="flex items-center gap-3.5 px-5 py-4 transition-colors hover:bg-ink-50"
+                className="flex items-center gap-3.5 px-5 py-4 transition-colors hover:bg-white/30"
               >
                 <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brass-50 text-brass-600">
                   <Sparkles className="h-[18px] w-[18px]" />

@@ -60,7 +60,7 @@ export default function SignInPage() {
         <div className="mb-9 flex flex-col items-center text-center">
           <LogoMark className="h-14 w-14" />
           <div className="mt-4">
-            <Wordmark className="[&>span:first-child]:text-[17px]" />
+            <Wordmark size="lg" />
           </div>
         </div>
 
@@ -117,9 +117,9 @@ export default function SignInPage() {
           )}
 
           <div className="flex items-center justify-between gap-4 pt-1">
-            <div className="flex items-center gap-2.5">
+            <div className="flex min-w-0 items-center gap-2.5">
               <Toggle checked={remember} onChange={setRemember} label="Remember this device" />
-              <span className="text-sm text-ink-500">Remember this device</span>
+              <span className="truncate text-sm text-ink-500">Remember this device</span>
             </div>
             <button
               type="button"

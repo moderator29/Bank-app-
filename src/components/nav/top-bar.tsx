@@ -13,11 +13,11 @@ export function TopBar() {
   const unread = useBank(unreadCount);
 
   return (
-    <header className="sticky top-0 z-40 -mx-4 mb-4 border-b border-line/70 bg-canvas/85 px-4 backdrop-blur-xl sm:-mx-6 sm:px-6 lg:mx-0 lg:border-none lg:bg-transparent lg:px-0 lg:backdrop-blur-none">
+    <header className="sticky top-0 z-40 -mx-4 mb-4 border-b border-white/50 bg-canvas/70 px-4 backdrop-blur-2xl backdrop-saturate-150 sm:-mx-6 sm:px-6 lg:mx-0 lg:border-none lg:bg-transparent lg:px-0 lg:backdrop-blur-none">
       <div className="flex h-14 items-center justify-between gap-3 lg:h-16">
         <Link href="/home" className="flex items-center gap-2.5 lg:hidden" aria-label="Auremont Bank home">
           <LogoMark className="h-[30px] w-[30px]" />
-          <span className="text-[13px] font-semibold tracking-[0.2em] text-ink-900">
+          <span className="font-display text-[15px] font-semibold tracking-[0.2em] text-ink-900">
             AUREMONT
           </span>
         </Link>

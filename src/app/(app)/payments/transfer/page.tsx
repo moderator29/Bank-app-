@@ -15,7 +15,11 @@ const QUICK = [100, 500, 1_000, 5_000];
 
 export default function TransferPage() {
   const accounts = useBank((s) => s.accounts);
-  const external = useBank((s) => s.externalAccounts.filter((x) => x.status === "linked"));
+  const externalAll = useBank((s) => s.externalAccounts);
+  const external = React.useMemo(
+    () => externalAll.filter((x) => x.status === "linked"),
+    [externalAll]
+  );
   const transfer = useBank((s) => s.transfer);
   const transferExternal = useBank((s) => s.transferExternal);
 

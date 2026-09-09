@@ -56,7 +56,7 @@ export function Sheet({
             exit={{ y: "100%", opacity: 0.6 }}
             transition={{ type: "spring", stiffness: 420, damping: 38 }}
             className={cn(
-              "relative w-full max-w-md rounded-t-3xl border border-line bg-surface pb-safe shadow-e3",
+              "edge glass-panel relative w-full max-w-md rounded-t-3xl pb-safe shadow-e3",
               "sm:rounded-3xl",
               className
             )}

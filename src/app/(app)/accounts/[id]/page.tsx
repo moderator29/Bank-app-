@@ -24,16 +24,21 @@ import { PasscodeGate } from "@/components/ui/passcode-gate";
 import { EmptyState } from "@/components/shared/empty-state";
 import { TransactionRow } from "@/components/activity/transaction-row";
 import { useBank } from "@/lib/store";
-import { accountById, cardsForAccount, statementsForAccount, txForAccount } from "@/lib/selectors";
+import { accountById } from "@/lib/selectors";
+import {
+  useAccountTransactions,
+  useCardsForAccount,
+  useStatements,
+} from "@/lib/hooks";
 import { formatDate, money } from "@/lib/utils";
 
 export default function AccountDetailPage() {
   const { id } = useParams<{ id: string }>();
   const user = useBank((s) => s.user);
   const account = useBank((s) => accountById(s, id));
-  const transactions = useBank((s) => txForAccount(s, id));
-  const cards = useBank((s) => cardsForAccount(s, id));
-  const statements = useBank((s) => statementsForAccount(s, id));
+  const transactions = useAccountTransactions(id);
+  const cards = useCardsForAccount(id);
+  const statements = useStatements(id);
   const hidden = useBank((s) => s.balanceHidden);
   const toggle = useBank((s) => s.toggleBalanceHidden);
 

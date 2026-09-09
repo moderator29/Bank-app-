@@ -15,7 +15,7 @@ export function BottomNav() {
       aria-label="Primary"
       className="fixed inset-x-0 bottom-0 z-50 px-3 pb-safe lg:hidden"
     >
-      <div className="glass-nav mx-auto mb-2.5 flex max-w-md items-center justify-between gap-0.5 rounded-3xl p-1.5">
+      <div className="edge glass-nav relative mx-auto mb-2.5 flex max-w-md items-center justify-between gap-0.5 rounded-3xl p-1.5">
         {tabNav.map((item) => {
           const active = isActive(pathname, item);
           return (
@@ -29,7 +29,7 @@ export function BottomNav() {
                 <motion.span
                   layoutId="tab-active"
                   transition={{ type: "spring", stiffness: 460, damping: 36 }}
-                  className="absolute inset-0 rounded-2xl bg-ink-900/6"
+                  className="absolute inset-0 rounded-2xl border border-brass-400/30 bg-ink-900/7"
                 />
               )}
               <item.icon

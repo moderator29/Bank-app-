@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 import { Surface } from "@/components/ui/surface";
 import { AnimatedMoney } from "@/components/ui/animated-number";
 import { useBank } from "@/lib/store";
-import { nextPayday, primaryAccount, windowFlow } from "@/lib/selectors";
+import { nextPayday, primaryAccount } from "@/lib/selectors";
+import { useWindowFlow } from "@/lib/hooks";
 import { formatDate, money } from "@/lib/utils";
 
 /**
@@ -18,7 +19,7 @@ export function BalanceHero() {
   const hidden = useBank((s) => s.balanceHidden);
   const toggle = useBank((s) => s.toggleBalanceHidden);
   const payday = useBank(nextPayday);
-  const flow = useBank((s) => windowFlow(s, 30, account.id));
+  const flow = useWindowFlow(30, account.id);
 
   return (
     <Surface variant="navy" radius="3xl" index={0} className="overflow-hidden">

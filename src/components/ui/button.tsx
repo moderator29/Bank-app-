@@ -14,7 +14,7 @@ const button = cva(
     variants: {
       variant: {
         primary:
-          "bg-action text-action-fg shadow-e2 hover:bg-action-hover",
+          "btn-primary bg-action text-action-fg hover:bg-action-hover",
         brass:
           "bg-brass-400 text-[#0a1422] shadow-e2 hover:bg-brass-300",
         secondary:

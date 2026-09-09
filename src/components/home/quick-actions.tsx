@@ -26,9 +26,9 @@ export function QuickActions({ className }: { className?: string }) {
         >
           <Link
             href={action.href}
-            className="press flex h-full flex-col items-center gap-2 rounded-xl border border-line bg-surface px-1 py-3 shadow-e1 hover:border-line-strong"
+            className="press edge glass-panel relative flex h-full flex-col items-center gap-2 rounded-xl px-1 py-3 hover:brightness-[1.02]"
           >
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-50 text-ink-700">
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-900/6 text-ink-800">
               <action.icon className="h-[18px] w-[18px]" />
             </span>
             <span className="text-center text-[11px] font-semibold leading-tight text-ink-700">

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowDownLeft, ArrowUpRight, ChartPie } from "lucide-react";
 import { Surface } from "@/components/ui/surface";
 import { useBank } from "@/lib/store";
-import { monthSummary, spendByCategory } from "@/lib/selectors";
+import { useMonthSummary, useSpendByCategory } from "@/lib/hooks";
 import { CATEGORY_LABEL } from "@/components/activity/category-icon";
 import { money } from "@/lib/utils";
 
@@ -13,8 +13,8 @@ import { money } from "@/lib/utils";
  * outgoings actually went. Two figures and three bars — nothing more.
  */
 export function Snapshot() {
-  const summary = useBank((s) => monthSummary(s, 0));
-  const spend = useBank((s) => spendByCategory(s, 30));
+  const summary = useMonthSummary(0);
+  const spend = useSpendByCategory(30);
   const hidden = useBank((s) => s.balanceHidden);
   const top = spend.rows.slice(0, 3);
 
@@ -22,7 +22,7 @@ export function Snapshot() {
     <Surface index={2} className="overflow-hidden">
       <div className="flex items-center justify-between gap-3 border-b border-line px-5 py-4">
         <div>
-          <h2 className="text-base font-semibold tracking-tight text-ink-900">
+          <h2 className="font-display text-lg font-semibold text-ink-900">
             {summary.label}
           </h2>
           <p className="text-xs text-ink-400">Money in and out this month</p>

@@ -5,12 +5,13 @@ import { CalendarClock, ChevronRight } from "lucide-react";
 import { Surface, Chip } from "@/components/ui/surface";
 import { CategoryIcon } from "@/components/activity/category-icon";
 import { useBank } from "@/lib/store";
-import { billTotalDue, upcomingBills } from "@/lib/selectors";
+import { billTotalDue } from "@/lib/selectors";
+import { useUpcomingBills } from "@/lib/hooks";
 import { dueLabel, money } from "@/lib/utils";
 
 /** What's leaving the account next — the question people open a bank app to ask. */
 export function Upcoming() {
-  const bills = useBank(upcomingBills);
+  const bills = useUpcomingBills();
   const hidden = useBank((s) => s.balanceHidden);
   const next = bills.slice(0, 3);
   const total = billTotalDue(bills);
@@ -23,7 +24,7 @@ export function Upcoming() {
         <div className="flex items-center gap-2.5">
           <CalendarClock className="h-[18px] w-[18px] text-ink-400" />
           <div>
-            <h2 className="text-base font-semibold tracking-tight text-ink-900">Coming up</h2>
+            <h2 className="font-display text-lg font-semibold text-ink-900">Coming up</h2>
             <p className="tnum text-xs text-ink-400">
               {hidden ? "•••" : money(total)} across {bills.length}{" "}
               {bills.length === 1 ? "bill" : "bills"}

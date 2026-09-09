@@ -7,10 +7,10 @@ import { cn } from "@/lib/utils";
 type Variant = "solid" | "sunken" | "navy" | "glass";
 
 const VARIANTS: Record<Variant, string> = {
-  solid: "bg-surface border border-line shadow-e1",
-  sunken: "bg-surface-sunken border border-line",
-  navy: "surface-navy keyline-brass text-white shadow-e3",
-  glass: "glass border border-white/70 shadow-e2",
+  solid: "edge bg-surface border border-line shadow-e2",
+  sunken: "edge bg-surface-sunken border border-line",
+  navy: "edge edge-brass surface-navy text-white shadow-e3",
+  glass: "edge glass",
 };
 
 interface SurfaceProps extends Omit<HTMLMotionProps<"div">, "children"> {
@@ -66,7 +66,7 @@ export function SectionHeader({
 }) {
   return (
     <div className={cn("mb-2.5 flex items-baseline justify-between gap-3 px-1", className)}>
-      <h2 className="text-[13px] font-semibold uppercase tracking-[0.09em] text-ink-400">
+      <h2 className="text-[13px] font-semibold uppercase tracking-[0.14em] text-ink-400">
         {title}
       </h2>
       {action}

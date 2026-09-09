@@ -97,15 +97,20 @@ export function ListRow({
   return <div className={shell}>{body}</div>;
 }
 
-/** iOS-style switch used throughout settings and security. */
+/**
+ * Settings switch. Off is a quiet neutral track; on is the brand's action
+ * colour rather than a signal green, so a page of toggles stays calm.
+ */
 export function Toggle({
   checked,
   onChange,
   label,
+  disabled,
 }: {
   checked: boolean;
   onChange: (v: boolean) => void;
   label: string;
+  disabled?: boolean;
 }) {
   return (
     <button
@@ -113,16 +118,22 @@ export function Toggle({
       role="switch"
       aria-checked={checked}
       aria-label={label}
+      disabled={disabled}
       onClick={() => onChange(!checked)}
       className={cn(
-        "relative h-[26px] w-[44px] shrink-0 rounded-3xl transition-colors duration-200",
-        checked ? "bg-pos-500" : "bg-ink-200"
+        "relative h-[30px] w-[52px] shrink-0 rounded-3xl border transition-colors duration-200 ease-out",
+        "focus-visible:outline-2 focus-visible:outline-offset-2",
+        disabled && "cursor-not-allowed opacity-45",
+        checked
+          ? "border-transparent bg-action"
+          : "border-line-strong bg-ink-100 hover:bg-ink-200"
       )}
     >
       <span
         className={cn(
-          "absolute top-[3px] h-5 w-5 rounded-3xl bg-white shadow-e1 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          checked ? "translate-x-[21px]" : "translate-x-[3px]"
+          "absolute top-[3px] h-[22px] w-[22px] rounded-3xl bg-white transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
+          "shadow-[0_1px_2px_rgb(13_26_44/0.28),0_0_0_0.5px_rgb(13_26_44/0.06)]",
+          checked ? "translate-x-[25px]" : "translate-x-[3px]"
         )}
       />
     </button>
