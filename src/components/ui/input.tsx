@@ -10,7 +10,10 @@ export const Input = React.forwardRef<
   <input
     ref={ref}
     className={cn(
-      "h-12 w-full rounded-2xl border border-brand-100 bg-white/70 px-4 text-sm text-ink-900 placeholder:text-ink-400 shadow-[inset_0_1px_2px_rgb(6_40_30/0.03)] transition-all focus:border-brand-400 focus:outline-none focus:ring-4 focus:ring-brand-400/15",
+      "h-12 w-full rounded-md border border-line-strong bg-surface px-3.5 text-base text-ink-900",
+      "placeholder:text-ink-300 transition-[border-color,box-shadow] duration-150",
+      "focus:border-ink-700 focus:outline-none focus:ring-4 focus:ring-ink-900/8",
+      "disabled:bg-surface-sunken disabled:text-ink-400",
       className
     )}
     {...props}
@@ -20,17 +23,55 @@ Input.displayName = "Input";
 
 export function Field({
   label,
+  hint,
+  error,
   children,
+  className,
 }: {
   label: string;
+  hint?: string;
+  error?: string | null;
   children: React.ReactNode;
+  className?: string;
 }) {
   return (
-    <label className="block space-y-1.5">
-      <span className="text-xs font-semibold uppercase tracking-wide text-ink-400">
-        {label}
-      </span>
+    <label className={cn("block", className)}>
+      <span className="mb-1.5 block text-xs font-semibold text-ink-500">{label}</span>
       {children}
+      {error ? (
+        <span className="mt-1.5 block text-xs font-medium text-neg-500">{error}</span>
+      ) : hint ? (
+        <span className="mt-1.5 block text-xs text-ink-400">{hint}</span>
+      ) : null}
     </label>
+  );
+}
+
+/** Large amount entry — the hero control on every money form. */
+export function AmountInput({
+  value,
+  onChange,
+  autoFocus,
+  id = "amount",
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  autoFocus?: boolean;
+  id?: string;
+}) {
+  return (
+    <div className="relative flex items-center justify-center rounded-xl border border-line bg-surface-sunken px-4 py-6">
+      <span className="mr-1 text-2xl font-medium text-ink-300">$</span>
+      <input
+        id={id}
+        value={value}
+        autoFocus={autoFocus}
+        onChange={(e) => onChange(e.target.value.replace(/[^\d.]/g, ""))}
+        inputMode="decimal"
+        placeholder="0.00"
+        aria-label="Amount"
+        className="tnum w-full max-w-[14ch] bg-transparent text-center text-4xl font-semibold tracking-tight text-ink-900 placeholder:text-ink-200 focus:outline-none"
+      />
+    </div>
   );
 }

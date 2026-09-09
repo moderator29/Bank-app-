@@ -4,26 +4,36 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-2xl text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-400 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98] cursor-pointer",
+/**
+ * Rectangular by default — banking controls, not social-app capsules.
+ * Radius comes from the system scale (md for controls, lg for large CTAs).
+ */
+const button = cva(
+  "press inline-flex select-none items-center justify-center gap-2 whitespace-nowrap font-semibold disabled:pointer-events-none disabled:opacity-45",
   {
     variants: {
       variant: {
         primary:
-          "bg-gradient-to-b from-brand-500 to-brand-600 text-white shadow-[0_8px_20px_-6px_rgb(22_136_96/0.5)] hover:shadow-[0_10px_26px_-6px_rgb(22_136_96/0.6)] hover:brightness-105",
+          "bg-action text-action-fg shadow-e2 hover:bg-action-hover",
+        brass:
+          "bg-brass-400 text-[#0a1422] shadow-e2 hover:bg-brass-300",
         secondary:
-          "glass text-ink-900 shadow-float hover:bg-white/90 hover:shadow-float-lg",
-        ghost: "text-ink-600 hover:bg-brand-50 hover:text-brand-700",
-        outline:
-          "border border-brand-200 bg-white/60 text-brand-700 hover:bg-brand-50",
-        danger: "bg-red-50 text-red-600 hover:bg-red-100",
+          "border border-line-strong bg-surface text-ink-800 shadow-e1 hover:bg-ink-25 hover:border-ink-200",
+        subtle: "bg-ink-50 text-ink-700 hover:bg-ink-100",
+        ghost: "text-ink-500 hover:bg-ink-50 hover:text-ink-800",
+        onNavy:
+          "border border-white/15 bg-white/10 text-white backdrop-blur-sm hover:bg-white/16",
+        danger: "bg-neg-50 text-neg-600 hover:bg-neg-500 hover:text-white",
       },
       size: {
-        sm: "h-9 px-4 text-xs",
-        md: "h-11 px-5",
-        lg: "h-13 px-7 text-base",
-        icon: "h-10 w-10 rounded-xl",
+        xs: "h-8 rounded-sm px-3 text-xs",
+        sm: "h-9 rounded-md px-3.5 text-sm",
+        md: "h-11 rounded-md px-4 text-base",
+        lg: "h-13 rounded-lg px-6 text-base",
+        icon: "h-10 w-10 rounded-md",
+        iconSm: "h-8 w-8 rounded-sm",
       },
+      block: { true: "w-full" },
     },
     defaultVariants: { variant: "primary", size: "md" },
   }
@@ -31,15 +41,13 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {}
+    VariantProps<typeof button> {}
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => (
-    <button
-      ref={ref}
-      className={cn(buttonVariants({ variant, size }), className)}
-      {...props}
-    />
+  ({ className, variant, size, block, ...props }, ref) => (
+    <button ref={ref} className={cn(button({ variant, size, block }), className)} {...props} />
   )
 );
 Button.displayName = "Button";
+
+export { button as buttonStyles };

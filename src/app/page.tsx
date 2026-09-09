@@ -2,24 +2,21 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { LogoMark } from "@/components/brand/logo";
+import { useBank } from "@/lib/store";
+import { BootScreen } from "@/components/shell/boot-screen";
 
-export default function Home() {
+/** Entry point: routes into the app, the passcode lock, or sign-in. */
+export default function Index() {
   const router = useRouter();
+  const hydrated = useBank((s) => s.hydrated);
+  const stage = useBank((s) => s.authStage);
 
   useEffect(() => {
-    router.replace("/dashboard");
-  }, [router]);
+    if (!hydrated) return;
+    router.replace(
+      stage === "authenticated" ? "/home" : stage === "passcode" ? "/passcode" : "/signin"
+    );
+  }, [hydrated, stage, router]);
 
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <motion.div
-        animate={{ scale: [1, 1.08, 1], opacity: [0.7, 1, 0.7] }}
-        transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <LogoMark className="h-14 w-14" />
-      </motion.div>
-    </div>
-  );
+  return <BootScreen />;
 }

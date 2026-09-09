@@ -1,65 +1,94 @@
 import { cn } from "@/lib/utils";
 
-export function LogoMark({ className }: { className?: string }) {
+/**
+ * The Auremont monogram — a brass apex ("A" as a mountain peak) struck into a
+ * navy field, with a hairline keyline. Used at every size from the tab bar to
+ * the sign-in screen.
+ */
+export function LogoMark({
+  className,
+  tone = "navy",
+}: {
+  className?: string;
+  tone?: "navy" | "light" | "mono";
+}) {
+  const field =
+    tone === "navy" ? "url(#aur-field)" : tone === "light" ? "#ffffff" : "transparent";
+  const apex = tone === "light" ? "url(#aur-brass-deep)" : "url(#aur-brass)";
+  const keyline = tone === "light" ? "rgba(13,26,44,0.10)" : "rgba(226,205,163,0.30)";
+
   return (
-    <svg
-      viewBox="0 0 48 48"
-      fill="none"
-      className={cn("h-10 w-10", className)}
-      aria-hidden
-    >
+    <svg viewBox="0 0 40 40" fill="none" className={cn("h-9 w-9", className)} aria-hidden>
       <defs>
-        <linearGradient id="v-glass" x1="6" y1="4" x2="42" y2="44">
-          <stop offset="0%" stopColor="#e8f7f0" />
-          <stop offset="55%" stopColor="#c7d8d2" />
-          <stop offset="100%" stopColor="#9fb8b0" />
+        <linearGradient id="aur-field" x1="4" y1="2" x2="36" y2="38">
+          <stop offset="0%" stopColor="#1e3350" />
+          <stop offset="55%" stopColor="#0d1a2c" />
+          <stop offset="100%" stopColor="#071120" />
         </linearGradient>
-        <linearGradient id="v-gold" x1="20" y1="14" x2="30" y2="36">
-          <stop offset="0%" stopColor="#f0c96a" />
-          <stop offset="100%" stopColor="#c89b3c" />
+        <linearGradient id="aur-brass" x1="12" y1="9" x2="28" y2="31">
+          <stop offset="0%" stopColor="#e8d3a6" />
+          <stop offset="45%" stopColor="#d4b781" />
+          <stop offset="100%" stopColor="#ad8845" />
+        </linearGradient>
+        <linearGradient id="aur-brass-deep" x1="12" y1="9" x2="28" y2="31">
+          <stop offset="0%" stopColor="#c2a05f" />
+          <stop offset="100%" stopColor="#8f6e36" />
         </linearGradient>
       </defs>
-      <path
-        d="M8 10 L24 4 L40 10 L40 26 L24 44 L8 26 Z"
-        fill="url(#v-glass)"
-        stroke="#ffffff"
-        strokeWidth="1.5"
-        strokeLinejoin="round"
-        opacity="0.95"
-      />
-      <path
-        d="M8 10 L24 16 L40 10 L24 4 Z"
-        fill="#ffffff"
-        opacity="0.45"
-      />
-      <path
-        d="M17 15 L24 32 L31 15 L27.5 15 L24 24.5 L20.5 15 Z"
-        fill="url(#v-gold)"
-      />
+
+      <rect x="0.5" y="0.5" width="39" height="39" rx="11" fill={field} />
+      <rect x="3.25" y="3.25" width="33.5" height="33.5" rx="8.5" stroke={keyline} strokeWidth="1" />
+
+      {/* Apex: the two rising strokes of the A, cut by a level bar. */}
+      <path d="M20 9.4 L29.6 30.6 H25.7 L20 17.6 L14.3 30.6 H10.4 Z" fill={apex} />
+      <rect x="15.6" y="23.4" width="8.8" height="2.9" rx="1.45" fill={apex} />
     </svg>
+  );
+}
+
+export function Wordmark({
+  className,
+  tone = "navy",
+}: {
+  className?: string;
+  tone?: "navy" | "light";
+}) {
+  return (
+    <span className={cn("leading-none", className)}>
+      <span
+        className={cn(
+          "block text-[15px] font-semibold tracking-[0.26em]",
+          tone === "light" ? "text-white" : "text-ink-900"
+        )}
+      >
+        AUREMONT
+      </span>
+      <span
+        className={cn(
+          "mt-[3px] block text-[8px] font-medium tracking-[0.42em]",
+          tone === "light" ? "text-brass-200/80" : "text-brass-500"
+        )}
+      >
+        BANK
+      </span>
+    </span>
   );
 }
 
 export function Logo({
   className,
-  compact = false,
+  tone = "navy",
+  size = "md",
 }: {
   className?: string;
-  compact?: boolean;
+  tone?: "navy" | "light";
+  size?: "sm" | "md" | "lg";
 }) {
+  const mark = size === "lg" ? "h-11 w-11" : size === "sm" ? "h-8 w-8" : "h-9 w-9";
   return (
-    <div className={cn("flex items-center gap-2.5", className)}>
-      <LogoMark className="h-9 w-9 drop-shadow-sm" />
-      {!compact && (
-        <div className="leading-none">
-          <span className="text-lg font-extrabold tracking-[0.18em] text-ink-900">
-            ECOKRIPTO
-          </span>
-          <p className="mt-1 text-[8px] font-semibold tracking-[0.14em] text-ink-400">
-            SMART MONEY. <span className="text-brand-500">LIMITLESS FUTURE.</span>
-          </p>
-        </div>
-      )}
-    </div>
+    <span className={cn("inline-flex items-center gap-2.5", className)}>
+      <LogoMark className={mark} tone={tone === "light" ? "light" : "navy"} />
+      <Wordmark tone={tone} />
+    </span>
   );
 }

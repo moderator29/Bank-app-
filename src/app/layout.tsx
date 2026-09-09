@@ -1,21 +1,33 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
+import { ThemeSync, themeBootScript } from "@/components/shell/theme";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ecokripto — Smart Money. Limitless Future.",
+  title: "Auremont Bank",
   description:
-    "Ecokripto — a premium savings and investment dashboard. Smart money, limitless future.",
+    "Auremont Bank — private banking, cards and payments in one considered account.",
+  applicationName: "Auremont Bank",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0d1a2c",
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={GeistSans.variable}>
-      <body>{children}</body>
+    <html lang="en" className={GeistSans.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+      </head>
+      <body>
+        <ThemeSync />
+        {children}
+      </body>
     </html>
   );
 }

@@ -1,17 +1,17 @@
 import {
-  ArrowDownToLine,
-  ArrowUpFromLine,
-  Bell,
-  Gift,
-  LayoutDashboard,
-  LifeBuoy,
-  LineChart,
-  Lock,
-  Percent,
-  PiggyBank,
+  ArrowLeftRight,
+  ChartPie,
+  CreditCard,
+  FileText,
+  Headphones,
+  House,
+  Landmark,
+  ListOrdered,
+  Plus,
+  Receipt,
   Settings,
-  User,
-  Users,
+  ShieldCheck,
+  UserRound,
   type LucideIcon,
 } from "lucide-react";
 
@@ -19,33 +19,50 @@ export interface NavItem {
   label: string;
   href: string;
   icon: LucideIcon;
+  /** Also treat these prefixes as this tab being active. */
+  match?: string[];
 }
 
-// Primary items shown in the desktop sidebar
-export const primaryNav: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Savings", href: "/savings", icon: PiggyBank },
-  { label: "Locked Savings", href: "/locked-savings", icon: Lock },
-  { label: "APY Earnings", href: "/apy-earnings", icon: Percent },
-  { label: "Investments", href: "/investments", icon: LineChart },
-  { label: "Deposit", href: "/deposit", icon: ArrowDownToLine },
-  { label: "Withdraw", href: "/withdraw", icon: ArrowUpFromLine },
-  { label: "Rewards", href: "/rewards", icon: Gift },
-  { label: "Referrals", href: "/referrals", icon: Users },
+/** Five tabs, and only five — everything else lives behind a hub. */
+export const tabNav: NavItem[] = [
+  { label: "Home", href: "/home", icon: House },
+  { label: "Accounts", href: "/accounts", icon: Landmark, match: ["/accounts", "/cards"] },
+  { label: "Pay", href: "/payments", icon: ArrowLeftRight, match: ["/payments", "/deposit"] },
+  { label: "Activity", href: "/activity", icon: ListOrdered, match: ["/activity", "/insights"] },
+  { label: "Profile", href: "/profile", icon: UserRound, match: ["/profile", "/settings", "/security", "/support", "/documents"] },
 ];
 
-// Secondary items (bottom of sidebar + inside the More drawer)
-export const secondaryNav: NavItem[] = [
-  { label: "Profile", href: "/profile", icon: User },
-  { label: "Notifications", href: "/notifications", icon: Bell },
-  { label: "Support", href: "/support", icon: LifeBuoy },
-  { label: "Settings", href: "/settings", icon: Settings },
+export const sidebarGroups: { label: string; items: NavItem[] }[] = [
+  {
+    label: "Banking",
+    items: [
+      { label: "Home", href: "/home", icon: House },
+      { label: "Accounts", href: "/accounts", icon: Landmark },
+      { label: "Cards", href: "/cards", icon: CreditCard },
+      { label: "Activity", href: "/activity", icon: ListOrdered },
+      { label: "Insights", href: "/insights", icon: ChartPie },
+    ],
+  },
+  {
+    label: "Move money",
+    items: [
+      { label: "Payments", href: "/payments", icon: ArrowLeftRight },
+      { label: "Bills", href: "/payments/bills", icon: Receipt },
+      { label: "Add money", href: "/deposit", icon: Plus },
+    ],
+  },
+  {
+    label: "Account",
+    items: [
+      { label: "Documents", href: "/documents", icon: FileText },
+      { label: "Security", href: "/security", icon: ShieldCheck },
+      { label: "Settings", href: "/settings", icon: Settings },
+      { label: "Support", href: "/support", icon: Headphones },
+    ],
+  },
 ];
 
-// Mobile bottom navigation (4 tabs + More)
-export const mobileNav: NavItem[] = [
-  { label: "Home", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Savings", href: "/savings", icon: PiggyBank },
-  { label: "Locked", href: "/locked-savings", icon: Lock },
-  { label: "Invest", href: "/investments", icon: LineChart },
-];
+export function isActive(pathname: string, item: NavItem) {
+  const prefixes = item.match ?? [item.href];
+  return prefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+}

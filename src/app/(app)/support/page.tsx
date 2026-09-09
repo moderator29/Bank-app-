@@ -1,164 +1,293 @@
 "use client";
 
 import * as React from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Check, ChevronDown, Copy, Mail, MessageCircle } from "lucide-react";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Check, Flag, MessageSquare, Phone, Search, X } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
+import { Surface, IconTile, SectionHeader } from "@/components/ui/surface";
+import { ListGroup, ListRow } from "@/components/ui/list";
+import { Input, Field } from "@/components/ui/input";
+import { Segmented } from "@/components/ui/segmented";
+import { Button } from "@/components/ui/button";
+import { Sheet } from "@/components/ui/sheet";
+import { EmptyState } from "@/components/shared/empty-state";
+import { useBank } from "@/lib/store";
+import { SUPPORT_TOPICS, searchArticles } from "@/components/support/articles";
 
-const SUPPORT_EMAIL = "support@ecokripto.com";
+type ProblemCategory = "payments" | "cards" | "app" | "other";
 
-const FAQS: { question: string; answer: string }[] = [
-  {
-    question: "How is my account protected?",
-    answer:
-      "Your account is secured with encryption and only accessible from your signed-in session. Keep your login details private and never share them.",
-  },
-  {
-    question: "How do deposits work?",
-    answer:
-      "Deposits are instant. Pick a linked account, enter an amount, and confirm — the funds are added to your balance right away with no fees.",
-  },
-  {
-    question: "How do I reset my account?",
-    answer:
-      "You can reset your account any time from Settings → Data & privacy. This clears your data and returns you to sign-up.",
-  },
-  {
-    question: "What is APY?",
-    answer:
-      "APY (Annual Percentage Yield) is the yearly rate your savings grow at, including compounding. Ecokripto applies a 4.25% APY to your balance.",
-  },
+const PROBLEM_OPTIONS: { value: ProblemCategory; label: string }[] = [
+  { value: "payments", label: "Payments" },
+  { value: "cards", label: "Cards" },
+  { value: "app", label: "The app" },
+  { value: "other", label: "Something else" },
 ];
 
 export default function SupportPage() {
-  const [chatNote, setChatNote] = React.useState(false);
-  const [copied, setCopied] = React.useState(false);
-  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+  const router = useRouter();
+  const threads = useBank((s) => s.supportThreads);
+  const startSupportThread = useBank((s) => s.startSupportThread);
 
-  const copyEmail = React.useCallback(async () => {
-    try {
-      await navigator.clipboard.writeText(SUPPORT_EMAIL);
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    } catch {
-      // Clipboard unavailable — silently ignore in demo.
-    }
-  }, []);
+  const [query, setQuery] = React.useState("");
+  const [callOpen, setCallOpen] = React.useState(false);
+  const [problemOpen, setProblemOpen] = React.useState(false);
+
+  const results = React.useMemo(() => searchArticles(query), [query]);
+  const searching = query.trim().length >= 2;
+  const openThreads = threads.filter((t) => t.status === "open").length;
 
   return (
-    <div className="space-y-8">
-      <PageHeader title="Support" subtitle="We are here to help" />
+    <div className="mx-auto w-full max-w-3xl">
+      <PageHeader
+        title="Help centre"
+        subtitle="Answers to the questions we're asked most, and a way to reach us"
+        back="/profile"
+      />
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <GlassCard className="p-6" delay={0.05}>
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-            <MessageCircle className="h-5 w-5" />
-          </div>
-          <h2 className="mt-4 text-lg font-extrabold tracking-tight text-ink-900">
-            Chat with us
-          </h2>
-          <p className="mt-1 text-sm text-ink-600">
-            Typical reply: a few minutes
-          </p>
-          <div className="mt-5">
-            <Button variant="secondary" size="md" onClick={() => setChatNote(true)}>
-              Start chat
-            </Button>
-          </div>
-          <AnimatePresence>
-            {chatNote && (
-              <motion.p
-                initial={{ opacity: 0, y: 4 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                className="mt-3 text-xs font-semibold text-brand-700"
-              >
-                Chat is currently offline — please email us.
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </GlassCard>
-
-        <GlassCard className="p-6" delay={0.1}>
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-            <Mail className="h-5 w-5" />
-          </div>
-          <h2 className="mt-4 text-lg font-extrabold tracking-tight text-ink-900">
-            Email support
-          </h2>
-          <p className="mt-1 text-sm text-ink-600">{SUPPORT_EMAIL}</p>
-          <div className="mt-5">
-            <Button variant="outline" size="md" onClick={copyEmail}>
-              {copied ? (
-                <>
-                  <Check className="h-4 w-4" />
-                  Copied
-                </>
-              ) : (
-                <>
-                  <Copy className="h-4 w-4" />
-                  Copy email
-                </>
-              )}
-            </Button>
-          </div>
-        </GlassCard>
+      <div className="relative">
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-ink-300" />
+        <Input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search help articles"
+          aria-label="Search help articles"
+          className="pl-11 pr-11"
+        />
+        {query && (
+          <button
+            type="button"
+            aria-label="Clear search"
+            onClick={() => setQuery("")}
+            className="press absolute right-2.5 top-1/2 -translate-y-1/2 rounded-sm p-1.5 text-ink-400 hover:bg-ink-50 hover:text-ink-800"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
 
-      <section className="space-y-3">
-        <motion.h2
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-          className="text-xl font-extrabold tracking-tight text-ink-900"
-        >
-          Frequently asked
-        </motion.h2>
-
-        <div className="space-y-3">
-          {FAQS.map((faq, index) => {
-            const open = openIndex === index;
-            return (
-              <GlassCard
-                key={faq.question}
-                hover={false}
-                delay={Math.min(0.2 + index * 0.05, 0.4)}
-                className="overflow-hidden"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenIndex(open ? null : index)}
-                  aria-expanded={open}
-                  className="flex w-full items-center justify-between gap-4 p-5 text-left"
-                >
-                  <span className="font-bold text-ink-900">{faq.question}</span>
-                  <ChevronDown
-                    className={`h-5 w-5 shrink-0 text-ink-400 transition-transform duration-300 ${
-                      open ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-                <AnimatePresence initial={false}>
-                  {open && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <p className="px-5 pb-5 text-sm leading-relaxed text-ink-600">
-                        {faq.answer}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </GlassCard>
-            );
-          })}
+      {searching ? (
+        <div className="mt-5">
+          {results.length === 0 ? (
+            <EmptyState
+              icon={Search}
+              title="No articles match that"
+              body="Try a different word, or start a conversation and we'll answer it directly."
+              action={
+                <Button variant="secondary" onClick={() => router.push("/support/chat")}>
+                  Start a conversation
+                </Button>
+              }
+              compact
+            />
+          ) : (
+            <ListGroup label={`${results.length} result${results.length === 1 ? "" : "s"}`}>
+              {results.map((a) => (
+                <ListRow
+                  key={a.id}
+                  title={a.title}
+                  detail={a.summary}
+                  href={`/support/${a.topic}#${a.id}`}
+                />
+              ))}
+            </ListGroup>
+          )}
         </div>
-      </section>
+      ) : (
+        <>
+          <div className="mt-6">
+            <SectionHeader title="Popular topics" />
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {SUPPORT_TOPICS.map((topic, i) => (
+                <Link key={topic.id} href={`/support/${topic.id}`} className="press block">
+                  <Surface index={i} className="h-full p-4 hover:border-line-strong">
+                    <IconTile tone="neutral">
+                      <topic.icon />
+                    </IconTile>
+                    <p className="mt-3 text-base font-semibold text-ink-900">{topic.label}</p>
+                    <p className="mt-0.5 text-sm leading-snug text-ink-400">{topic.blurb}</p>
+                  </Surface>
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6">
+            <ListGroup label="Contact us">
+              <ListRow
+                icon={
+                  <IconTile tone="navy">
+                    <MessageSquare />
+                  </IconTile>
+                }
+                title="Start a chat"
+                detail={
+                  openThreads > 0
+                    ? `${openThreads} conversation${openThreads === 1 ? "" : "s"} open`
+                    : "Typical reply in a few minutes"
+                }
+                href="/support/chat"
+              />
+              <ListRow
+                icon={
+                  <IconTile tone="neutral">
+                    <Phone />
+                  </IconTile>
+                }
+                title="Call us"
+                detail="Card and fraud support, 24 hours"
+                onClick={() => setCallOpen(true)}
+              />
+              <ListRow
+                icon={
+                  <IconTile tone="neutral">
+                    <Flag />
+                  </IconTile>
+                }
+                title="Report a problem"
+                detail="Something in the app isn't working as it should"
+                onClick={() => setProblemOpen(true)}
+              />
+            </ListGroup>
+          </div>
+        </>
+      )}
+
+      <Sheet
+        open={callOpen}
+        onClose={() => setCallOpen(false)}
+        title="Call Auremont"
+        description="Have your account ready — we'll confirm your identity before we start."
+      >
+        <div className="space-y-3 pt-1">
+          <div className="rounded-xl bg-surface-sunken px-4 py-3.5">
+            <p className="text-2xs font-semibold uppercase tracking-[0.09em] text-ink-400">
+              General banking
+            </p>
+            <p className="tnum mt-1 text-xl font-semibold text-ink-900">1-800-555-0142</p>
+            <p className="mt-0.5 text-sm text-ink-400">Mon–Fri 7am–10pm ET · Sat–Sun 8am–6pm ET</p>
+          </div>
+          <div className="rounded-xl bg-surface-sunken px-4 py-3.5">
+            <p className="text-2xs font-semibold uppercase tracking-[0.09em] text-ink-400">
+              Lost card or fraud
+            </p>
+            <p className="tnum mt-1 text-xl font-semibold text-ink-900">1-800-555-0199</p>
+            <p className="mt-0.5 text-sm text-ink-400">Answered 24 hours, every day</p>
+          </div>
+          <p className="text-sm leading-relaxed text-ink-400">
+            We will never call you to ask for your passcode or a one-time code. If in doubt,
+            hang up and call the number above.
+          </p>
+        </div>
+      </Sheet>
+
+      <ReportProblemSheet
+        open={problemOpen}
+        onClose={() => setProblemOpen(false)}
+        onSubmit={(subject, body) => startSupportThread(subject, body)}
+      />
     </div>
+  );
+}
+
+function ReportProblemSheet({
+  open,
+  onClose,
+  onSubmit,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onSubmit: (subject: string, body: string) => string;
+}) {
+  const router = useRouter();
+  const [category, setCategory] = React.useState<ProblemCategory>("payments");
+  const [detail, setDetail] = React.useState("");
+  const [error, setError] = React.useState<string | null>(null);
+  const [threadId, setThreadId] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    setCategory("payments");
+    setDetail("");
+    setError(null);
+    setThreadId(null);
+  }, [open]);
+
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (detail.trim().length < 12) {
+      setError("Tell us a little more — at least a sentence helps us find it faster.");
+      return;
+    }
+    const label = PROBLEM_OPTIONS.find((o) => o.value === category)?.label ?? "Support";
+    setThreadId(onSubmit(`Problem report · ${label}`, detail.trim()));
+  };
+
+  return (
+    <Sheet
+      open={open}
+      onClose={onClose}
+      title={threadId ? "Thanks — we're on it" : "Report a problem"}
+      description={
+        threadId ? undefined : "Tell us what happened and we'll come back to you in the app."
+      }
+    >
+      {threadId ? (
+        <div className="pt-1">
+          <div className="flex items-start gap-3">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-pos-50 text-pos-500">
+              <Check className="h-[18px] w-[18px]" />
+            </span>
+            <p className="text-sm leading-relaxed text-ink-500">
+              Your report has been logged and a conversation opened. We&apos;ll reply there, and
+              you&apos;ll get a notification as soon as we do.
+            </p>
+          </div>
+          <div className="mt-4 flex flex-col gap-2">
+            <Button
+              block
+              onClick={() => {
+                onClose();
+                router.push(`/support/chat/${threadId}`);
+              }}
+            >
+              Open the conversation
+            </Button>
+            <Button variant="ghost" block onClick={onClose}>
+              Close
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <form onSubmit={submit} className="space-y-4 pt-1" noValidate>
+          <div>
+            <span className="mb-1.5 block text-xs font-semibold text-ink-500">
+              What&apos;s it about?
+            </span>
+            <Segmented
+              id="problem"
+              options={PROBLEM_OPTIONS}
+              value={category}
+              onChange={setCategory}
+            />
+          </div>
+          <Field label="What happened?" error={error}>
+            <textarea
+              value={detail}
+              onChange={(e) => {
+                setDetail(e.target.value);
+                setError(null);
+              }}
+              rows={4}
+              placeholder="Describe what you were doing and what went wrong."
+              className="w-full resize-none rounded-md border border-line-strong bg-surface px-3.5 py-3 text-base text-ink-900 placeholder:text-ink-300 focus:border-ink-700 focus:outline-none focus:ring-4 focus:ring-ink-900/8"
+            />
+          </Field>
+          <Button type="submit" block>
+            Send report
+          </Button>
+        </form>
+      )}
+    </Sheet>
   );
 }

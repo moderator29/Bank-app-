@@ -1,182 +1,189 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { GlassCard } from "@/components/ui/glass-card";
-import { Button } from "@/components/ui/button";
-import { Modal } from "@/components/ui/modal";
+import {
+  Bell,
+  FileSignature,
+  Headphones,
+  Landmark,
+  Lock,
+  Palette,
+  ScrollText,
+  ShieldCheck,
+} from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
-import { useEcokripto } from "@/lib/store";
-import { cn } from "@/lib/utils";
+import { IconTile } from "@/components/ui/surface";
+import { ListGroup, ListRow } from "@/components/ui/list";
+import { Sheet } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { useBank } from "@/lib/store";
 
-function Toggle({
-  on,
-  onToggle,
-  label,
-}: {
-  on: boolean;
-  onToggle: () => void;
-  label: string;
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={on}
-      aria-label={label}
-      onClick={onToggle}
-      className={cn(
-        "relative flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full px-0.5 transition-colors duration-300",
-        on ? "justify-end bg-brand-500" : "justify-start bg-ink-400/30"
-      )}
-    >
-      <motion.span
-        layout
-        transition={{ type: "spring", stiffness: 500, damping: 32 }}
-        className="h-5 w-5 rounded-full bg-white shadow-sm"
-      />
-    </button>
-  );
+const THEME_LABEL = { light: "Light", dark: "Dark", system: "System" } as const;
+
+interface LegalDoc {
+  id: string;
+  title: string;
+  updated: string;
+  body: string[];
 }
 
-function ToggleRow({
-  label,
-  description,
-  on,
-  onToggle,
-}: {
-  label: string;
-  description: string;
-  on: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4 py-3.5 first:pt-0 last:pb-0">
-      <div>
-        <p className="text-sm font-semibold text-ink-900">{label}</p>
-        <p className="mt-0.5 text-xs text-ink-400">{description}</p>
-      </div>
-      <Toggle on={on} onToggle={onToggle} label={label} />
-    </div>
-  );
-}
-
-function SectionTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-ink-400">
-      {children}
-    </p>
-  );
-}
+const LEGAL: LegalDoc[] = [
+  {
+    id: "terms",
+    title: "Terms of service",
+    updated: "Updated 1 January 2026",
+    body: [
+      "These terms govern your use of the Auremont Bank app and the deposit accounts, cards and payment services you access through it. By keeping an account open with us you agree to them, along with the fee schedule and rate sheet published for your account type.",
+      "You are responsible for keeping your passcode and device secure and for the accuracy of the payment instructions you give us. We may decline, delay or reverse an instruction where we reasonably suspect fraud, where it would breach applicable law, or where the funding account has insufficient available funds.",
+      "We may change these terms on thirty days' written notice, or immediately where a change is required by law or is in your favour. Continuing to use your account after a change takes effect means you accept it.",
+    ],
+  },
+  {
+    id: "privacy",
+    title: "Privacy notice",
+    updated: "Updated 1 January 2026",
+    body: [
+      "Auremont Bank collects the information you give us when you open and use an account, together with transaction records, device and location signals used to detect fraud. We use it to run your accounts, to meet our legal obligations and to keep your money safe.",
+      "We do not sell your personal information. We share it with service providers who process payments and print cards on our behalf, with credit reference and fraud prevention agencies, and with regulators and law enforcement where the law requires it.",
+      "You can limit optional analytics and marketing at any time under Settings → Privacy. Limiting them never affects your account, your rates or the service you receive from us.",
+    ],
+  },
+  {
+    id: "deposit",
+    title: "Deposit account agreement",
+    updated: "Updated 1 January 2026",
+    body: [
+      "Deposits are held at Auremont Bank, Member FDIC, and are insured to the maximum permitted by law — currently $250,000 per depositor, per ownership category. Interest on savings accounts accrues daily on the closing balance and is credited on the last business day of each month.",
+      "Funds from electronic deposits are generally available on the business day we receive them. Check deposits are subject to our funds availability policy, and we tell you the expected availability date when a hold applies.",
+      "Either of us may close an account with reasonable notice. On closure we return the remaining balance, less any amounts you owe us, to an account in your name.",
+    ],
+  },
+];
 
 export default function SettingsPage() {
-  const router = useRouter();
-  const signOut = useEcokripto((s) => s.signOut);
-
-  const [privacyMode, setPrivacyMode] = React.useState(true);
-  const [weeklySummary, setWeeklySummary] = React.useState(false);
-  const [soundEffects, setSoundEffects] = React.useState(false);
-  const [productUpdates, setProductUpdates] = React.useState(true);
-  const [payoutAlerts, setPayoutAlerts] = React.useState(true);
-  const [confirmOpen, setConfirmOpen] = React.useState(false);
-
-  const handleReset = () => {
-    setConfirmOpen(false);
-    signOut();
-    router.replace("/dashboard");
-  };
+  const theme = useBank((s) => s.preferences.theme);
+  const twoFactor = useBank((s) => s.preferences.twoFactor);
+  const pushMarketing = useBank((s) => s.preferences.pushMarketing);
+  const [doc, setDoc] = React.useState<LegalDoc | null>(null);
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <PageHeader
-        title="Settings"
-        subtitle="Preferences for your Ecokripto experience"
-      />
+      <PageHeader title="Settings" subtitle="How the app looks, alerts you and protects you" back="/profile" />
 
-      <div className="mt-6 flex flex-col gap-5">
-        <GlassCard className="p-6" delay={0.05}>
-          <SectionTitle>Preferences</SectionTitle>
-          <div className="divide-y divide-ink-400/10">
-            <ToggleRow
-              label="Balance privacy mode"
-              description="Blur balances when others may be looking."
-              on={privacyMode}
-              onToggle={() => setPrivacyMode((v) => !v)}
-            />
-            <ToggleRow
-              label="Weekly summary"
-              description="A recap of your savings activity every Monday."
-              on={weeklySummary}
-              onToggle={() => setWeeklySummary((v) => !v)}
-            />
-            <ToggleRow
-              label="Sound effects"
-              description="Gentle chimes for deposits and milestones."
-              on={soundEffects}
-              onToggle={() => setSoundEffects((v) => !v)}
-            />
-          </div>
-        </GlassCard>
+      <div className="space-y-6">
+        <ListGroup label="General">
+          <ListRow
+            icon={
+              <IconTile tone="neutral">
+                <Palette />
+              </IconTile>
+            }
+            title="Appearance"
+            detail="Light, dark or match your device"
+            value={<span className="text-sm font-medium text-ink-400">{THEME_LABEL[theme]}</span>}
+            href="/settings/appearance"
+          />
+          <ListRow
+            icon={
+              <IconTile tone="neutral">
+                <Bell />
+              </IconTile>
+            }
+            title="Notifications"
+            detail="Choose what we alert you about"
+            href="/settings/notifications"
+          />
+          <ListRow
+            icon={
+              <IconTile tone="neutral">
+                <Lock />
+              </IconTile>
+            }
+            title="Privacy"
+            detail={pushMarketing ? "Offers on · balance controls" : "Offers off · balance controls"}
+            href="/settings/privacy"
+          />
+        </ListGroup>
 
-        <GlassCard className="p-6" delay={0.12}>
-          <SectionTitle>Notifications</SectionTitle>
-          <div className="divide-y divide-ink-400/10">
-            <ToggleRow
-              label="Product updates"
-              description="Occasional news about new Ecokripto features."
-              on={productUpdates}
-              onToggle={() => setProductUpdates((v) => !v)}
-            />
-            <ToggleRow
-              label="Payout alerts"
-              description="Get notified before each APY payout lands."
-              on={payoutAlerts}
-              onToggle={() => setPayoutAlerts((v) => !v)}
-            />
-          </div>
-        </GlassCard>
+        <ListGroup label="Protection">
+          <ListRow
+            icon={
+              <IconTile tone="neutral">
+                <ShieldCheck />
+              </IconTile>
+            }
+            title="Security centre"
+            detail={twoFactor ? "Two-step verification on" : "Two-step verification off"}
+            href="/security"
+          />
+          <ListRow
+            icon={
+              <IconTile tone="neutral">
+                <Landmark />
+              </IconTile>
+            }
+            title="Statements & documents"
+            detail="Monthly statements and tax forms"
+            href="/documents"
+          />
+          <ListRow
+            icon={
+              <IconTile tone="neutral">
+                <Headphones />
+              </IconTile>
+            }
+            title="Support"
+            detail="Help centre and conversations"
+            href="/support"
+          />
+        </ListGroup>
 
-        <GlassCard className="p-6" delay={0.19}>
-          <SectionTitle>Data &amp; privacy</SectionTitle>
-          <p className="text-sm leading-relaxed text-ink-600">
-            Your data is stored securely and only you can access it. You can
-            reset your account at any time.
-          </p>
-          <div className="mt-5">
-            <Button variant="outline" onClick={() => setConfirmOpen(true)}>
-              Reset account data
-            </Button>
-          </div>
-        </GlassCard>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="pb-2 text-center text-xs text-ink-400"
-        >
-          Ecokripto &middot; v1.0.0
-        </motion.p>
+        <ListGroup label="Legal">
+          {LEGAL.map((d) => (
+            <ListRow
+              key={d.id}
+              icon={
+                <IconTile tone="neutral">
+                  {d.id === "terms" ? (
+                    <ScrollText />
+                  ) : d.id === "privacy" ? (
+                    <Lock />
+                  ) : (
+                    <FileSignature />
+                  )}
+                </IconTile>
+              }
+              title={d.title}
+              detail={d.updated}
+              onClick={() => setDoc(d)}
+            />
+          ))}
+        </ListGroup>
       </div>
 
-      <Modal
-        open={confirmOpen}
-        onClose={() => setConfirmOpen(false)}
-        title="Reset account data?"
+      <p className="mt-6 px-1 text-center text-2xs leading-relaxed text-ink-300">
+        Auremont Bank · Member FDIC · Equal Housing Lender
+        <br />
+        Deposits insured to $250,000 per depositor, per ownership category.
+      </p>
+
+      <Sheet
+        open={doc !== null}
+        onClose={() => setDoc(null)}
+        title={doc?.title ?? ""}
+        description={doc?.updated}
       >
-        <p className="text-sm leading-relaxed text-ink-600">
-          This clears your account data and returns you to sign-up.
-        </p>
-        <div className="mt-6 flex justify-end gap-3">
-          <Button variant="ghost" onClick={() => setConfirmOpen(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleReset}>
-            Reset everything
-          </Button>
+        <div className="max-h-[52vh] space-y-3 overflow-y-auto pr-1">
+          {doc?.body.map((p, i) => (
+            <p key={i} className="text-sm leading-relaxed text-ink-500">
+              {p}
+            </p>
+          ))}
         </div>
-      </Modal>
+        <Button variant="secondary" block className="mt-4" onClick={() => setDoc(null)}>
+          Close
+        </Button>
+      </Sheet>
     </div>
   );
 }

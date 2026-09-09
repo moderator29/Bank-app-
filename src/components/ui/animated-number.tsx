@@ -1,33 +1,29 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-} from "framer-motion";
-import { formatCurrency } from "@/lib/utils";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { money } from "@/lib/utils";
 
-export function AnimatedCurrency({
+/** Counts a balance up on first paint, then tracks changes without replaying. */
+export function AnimatedMoney({
   value,
   className,
 }: {
   value: number;
   className?: string;
 }) {
-  const mv = useMotionValue(0);
-  const spring = useSpring(mv, { stiffness: 65, damping: 20 });
-  const display = useTransform(spring, (v) => formatCurrency(v));
+  const mv = useMotionValue(value);
+  const spring = useSpring(mv, { stiffness: 90, damping: 22, restDelta: 0.5 });
+  const text = useTransform(spring, (v) => money(v));
   const started = useRef(false);
 
   useEffect(() => {
     if (!started.current) {
       started.current = true;
-      mv.jump(value * 0.6);
+      mv.jump(value * 0.88);
     }
     mv.set(value);
   }, [value, mv]);
 
-  return <motion.span className={className}>{display}</motion.span>;
+  return <motion.span className={className}>{text}</motion.span>;
 }
