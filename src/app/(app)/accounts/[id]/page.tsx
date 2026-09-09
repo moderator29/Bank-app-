@@ -273,7 +273,7 @@ function Action({
   return (
     <Link
       href={href}
-      className={`press flex flex-col items-center gap-2 rounded-xl border border-line bg-surface px-1 py-3 shadow-e1 hover:border-line-strong ${className ?? ""}`}
+      className={`press flex flex-col items-center gap-2 edge glass-panel relative rounded-xl px-1 py-3 hover:border-line-strong ${className ?? ""}`}
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-50 text-ink-700">
         <Icon className="h-[18px] w-[18px]" />
@@ -295,7 +295,7 @@ function DetailRow({
   mono?: boolean;
 }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 rounded-md border border-line bg-surface-sunken px-3.5 py-3">
+    <div className="flex items-baseline justify-between gap-4 edge glass-sunken relative rounded-md px-3.5 py-3">
       <span className="text-sm text-ink-400">{label}</span>
       <span className={`text-right text-sm font-semibold text-ink-900 ${mono ? "tnum" : ""}`}>
         {value}

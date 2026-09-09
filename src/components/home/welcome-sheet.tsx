@@ -89,7 +89,7 @@ function Choice({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-line bg-surface p-3.5">
+    <div className="flex items-center gap-3 edge glass-panel relative rounded-xl p-3.5">
       <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-ink-50 text-ink-600">
         {icon}
       </span>

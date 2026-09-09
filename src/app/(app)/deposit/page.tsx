@@ -51,7 +51,7 @@ export default function DepositPage() {
         />
         <button
           onClick={() => setCashOpen(true)}
-          className="press flex w-full items-center gap-3.5 rounded-2xl border border-line bg-surface px-5 py-4 text-left shadow-e1 hover:border-line-strong"
+          className="press flex w-full items-center gap-3.5 edge glass-panel relative rounded-2xl px-5 py-4 text-left hover:brightness-[1.03]"
         >
           <IconTile tone="navy" size="lg">
             <Banknote />
@@ -125,7 +125,7 @@ export default function DepositPage() {
           {LOCATIONS.map((l) => (
             <div
               key={l.name}
-              className="flex items-center gap-3 rounded-xl border border-line bg-surface px-3.5 py-3"
+              className="flex items-center gap-3 edge glass-panel relative rounded-xl px-3.5 py-3"
             >
               <IconTile tone="neutral">
                 <MapPin />
@@ -163,7 +163,7 @@ function Option({
   return (
     <Link
       href={href}
-      className="press flex items-center gap-3.5 rounded-2xl border border-line bg-surface px-5 py-4 shadow-e1 hover:border-line-strong"
+      className="press flex items-center gap-3.5 edge glass-panel relative rounded-2xl px-5 py-4 hover:border-line-strong"
     >
       <IconTile tone="navy" size="lg">
         <Icon />

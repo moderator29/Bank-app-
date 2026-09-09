@@ -117,10 +117,10 @@ export default function SignInPage() {
           )}
 
           <div className="flex items-center justify-between gap-4 pt-1">
-            <div className="flex min-w-0 items-center gap-2.5">
-              <Toggle checked={remember} onChange={setRemember} label="Remember this device" />
+            <label className="flex min-w-0 items-center gap-2.5">
               <span className="truncate text-sm text-ink-500">Remember this device</span>
-            </div>
+              <Toggle checked={remember} onChange={setRemember} label="Remember this device" />
+            </label>
             <button
               type="button"
               onClick={() => setHelpOpen(true)}
@@ -135,7 +135,7 @@ export default function SignInPage() {
           </Button>
         </form>
 
-        <div className="mt-8 flex items-start gap-2.5 rounded-xl border border-line bg-surface px-4 py-3.5">
+        <div className="mt-8 flex items-start gap-2.5 edge glass-panel relative rounded-xl px-4 py-3.5">
           <Lock className="mt-0.5 h-4 w-4 shrink-0 text-brass-500" />
           <p className="text-xs leading-relaxed text-ink-400">
             Auremont will never ask for your password or passcode by phone, text or email.
@@ -158,7 +158,7 @@ export default function SignInPage() {
         description="We'll help you get back into your account."
       >
         <div className="space-y-4">
-          <div className="flex items-start gap-3 rounded-xl border border-line bg-surface-sunken p-4">
+          <div className="flex items-start gap-3 edge glass-sunken relative rounded-xl p-4">
             <Info className="mt-0.5 h-4 w-4 shrink-0 text-info-500" />
             <p className="text-sm leading-relaxed text-ink-500">
               For your security, password resets are confirmed with the phone number on your

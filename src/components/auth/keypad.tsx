@@ -31,7 +31,7 @@ export function Keypad({
           onClick={() => onKey(k)}
           whileTap={{ scale: 0.94, backgroundColor: "rgb(219 225 234)" }}
           transition={{ duration: 0.08 }}
-          className={cn(keyClass, "bg-surface border border-line shadow-e1")}
+          className={cn(keyClass, "edge glass-panel")}
         >
           {k}
         </motion.button>
@@ -58,7 +58,7 @@ export function Keypad({
         onClick={() => onKey("0")}
         whileTap={{ scale: 0.94, backgroundColor: "rgb(219 225 234)" }}
         transition={{ duration: 0.08 }}
-        className={cn(keyClass, "bg-surface border border-line shadow-e1")}
+        className={cn(keyClass, "edge glass-panel")}
       >
         0
       </motion.button>

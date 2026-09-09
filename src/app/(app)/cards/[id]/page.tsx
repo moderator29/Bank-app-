@@ -115,7 +115,7 @@ export default function CardDetailPage() {
       <div className="grid grid-cols-3 gap-2">
         <button
           onClick={() => (revealed ? setRevealed(false) : setGate("reveal"))}
-          className="press flex flex-col items-center gap-2 rounded-xl border border-line bg-surface px-1 py-3 shadow-e1 hover:border-line-strong"
+          className="press flex flex-col items-center gap-2 edge glass-panel relative rounded-xl px-1 py-3 hover:border-line-strong"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-50 text-ink-700">
             {revealed ? <EyeOff className="h-[18px] w-[18px]" /> : <Eye className="h-[18px] w-[18px]" />}
@@ -126,7 +126,7 @@ export default function CardDetailPage() {
         </button>
         <button
           onClick={() => setConfirm("freeze")}
-          className="press flex flex-col items-center gap-2 rounded-xl border border-line bg-surface px-1 py-3 shadow-e1 hover:border-line-strong"
+          className="press flex flex-col items-center gap-2 edge glass-panel relative rounded-xl px-1 py-3 hover:border-line-strong"
         >
           <span
             className={
@@ -143,7 +143,7 @@ export default function CardDetailPage() {
         </button>
         <button
           onClick={() => setConfirm("wallet")}
-          className="press flex flex-col items-center gap-2 rounded-xl border border-line bg-surface px-1 py-3 shadow-e1 hover:border-line-strong"
+          className="press flex flex-col items-center gap-2 edge glass-panel relative rounded-xl px-1 py-3 hover:border-line-strong"
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-50 text-ink-700">
             <Wallet className="h-[18px] w-[18px]" />
@@ -400,7 +400,7 @@ function CopyRow({
       <button
         onClick={onCopy}
         aria-label={`Copy ${label}`}
-        className="press flex h-9 items-center gap-1.5 rounded-md border border-line-strong bg-surface px-3 text-xs font-semibold text-ink-600 hover:bg-ink-25"
+        className="press flex h-9 items-center gap-1.5 rounded-md border border-line-strong bg-surface/60 px-3 backdrop-blur-sm text-xs font-semibold text-ink-600 hover:bg-ink-25"
       >
         {copied ? <Check className="h-3.5 w-3.5 text-pos-500" /> : <Copy className="h-3.5 w-3.5" />}
         {copied ? "Copied" : "Copy"}

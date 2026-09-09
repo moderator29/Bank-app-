@@ -7,8 +7,8 @@ import { cn } from "@/lib/utils";
 type Variant = "solid" | "sunken" | "navy" | "glass";
 
 const VARIANTS: Record<Variant, string> = {
-  solid: "edge bg-surface border border-line shadow-e2",
-  sunken: "edge bg-surface-sunken border border-line",
+  solid: "edge glass-panel",
+  sunken: "edge glass-sunken",
   navy: "edge edge-brass surface-navy text-white shadow-e3",
   glass: "edge glass",
 };

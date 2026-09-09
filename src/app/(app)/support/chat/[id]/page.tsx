@@ -120,7 +120,7 @@ export default function SupportConversationPage() {
                       "rounded-2xl px-3.5 py-2.5 text-left text-base leading-relaxed",
                       mine
                         ? "bg-action text-action-fg"
-                        : "border border-line bg-surface text-ink-800 shadow-e1"
+                        : "edge glass-panel relative text-ink-800"
                     )}
                   >
                     {m.body}
@@ -137,7 +137,7 @@ export default function SupportConversationPage() {
         {typing && (
           <div className="flex justify-start">
             <div
-              className="flex items-center gap-1.5 rounded-2xl border border-line bg-surface px-4 py-3 shadow-e1"
+              className="flex items-center gap-1.5 edge glass-panel relative rounded-2xl px-4 py-3"
               aria-label={`${thread.agent} is typing`}
             >
               {[0, 1, 2].map((i) => (
@@ -167,7 +167,7 @@ export default function SupportConversationPage() {
               key={s}
               type="button"
               onClick={() => send(s)}
-              className="press rounded-3xl border border-line bg-surface px-3.5 py-2 text-sm font-medium text-ink-600 shadow-e1 hover:border-line-strong hover:text-ink-900"
+              className="press edge glass-panel relative rounded-3xl px-3.5 py-2 text-sm font-medium text-ink-600 hover:text-ink-900"
             >
               {s}
             </button>
@@ -176,7 +176,7 @@ export default function SupportConversationPage() {
       )}
 
       <div className="sticky bottom-20 z-30 mt-5 lg:bottom-4">
-        <div className="flex items-end gap-2 rounded-2xl border border-line bg-surface p-2 shadow-e2">
+        <div className="flex items-end gap-2 edge glass-panel relative rounded-2xl p-2">
           <textarea
             ref={inputRef}
             value={draft}

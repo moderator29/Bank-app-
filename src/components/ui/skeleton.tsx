@@ -20,7 +20,7 @@ export function RowSkeleton() {
 
 export function ListSkeleton({ rows = 5 }: { rows?: number }) {
   return (
-    <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
+    <div className="edge glass-panel relative divide-y divide-line overflow-hidden rounded-2xl">
       {Array.from({ length: rows }).map((_, i) => (
         <RowSkeleton key={i} />
       ))}

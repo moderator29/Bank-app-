@@ -34,7 +34,7 @@ export function TransactionList({
                 </span>
               )}
             </div>
-            <div className="divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface shadow-e1">
+            <div className="edge glass-panel relative divide-y divide-line overflow-hidden rounded-2xl">
               {group.items.map((tx) => (
                 <TransactionRow key={tx.id} tx={tx} hidden={hidden} showTime />
               ))}

@@ -33,7 +33,7 @@ export const SAVINGS_ID = "acct-savings";
 export const CREDIT_ID = "acct-credit";
 
 export const DEMO_USER: User = {
-  name: "Tamara Lee Gilmore",
+  name: "Ojoisimi Igbasan KUTY",
   email: AUTH_EMAIL,
   phone: "(704) 555-0182",
   street: "1408 Weatherly Crescent, Apt 12B",
@@ -506,7 +506,7 @@ export const seedDevices = (): Device[] => [
 ];
 
 export const DEFAULT_PREFERENCES: Preferences = {
-  theme: "system",
+  theme: "light",
   biometric: true,
   twoFactor: true,
   pushTransactions: true,

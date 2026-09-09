@@ -22,7 +22,7 @@ export function ListGroup({
           {label}
         </h3>
       )}
-      <div className="overflow-hidden rounded-2xl border border-line bg-surface shadow-e1 divide-y divide-line">
+      <div className="edge glass-panel relative overflow-hidden rounded-2xl divide-y divide-line">
         {children}
       </div>
     </section>
@@ -67,7 +67,9 @@ export function ListRow({
         >
           {title}
         </span>
-        {detail && <span className="mt-0.5 block truncate text-sm text-ink-400">{detail}</span>}
+        {detail && (
+          <span className="mt-0.5 block text-sm leading-snug text-ink-400">{detail}</span>
+        )}
       </span>
       {value}
       {showChevron && <ChevronRight className="h-4 w-4 shrink-0 text-ink-300" />}
@@ -76,7 +78,7 @@ export function ListRow({
 
   const shell = cn(
     "flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors",
-    interactive && "hover:bg-ink-25 active:bg-ink-50",
+    interactive && "hover:bg-ink-900/4 active:bg-ink-900/7",
     className
   );
 
@@ -98,8 +100,12 @@ export function ListRow({
 }
 
 /**
- * Settings switch. Off is a quiet neutral track; on is the brand's action
- * colour rather than a signal green, so a page of toggles stays calm.
+ * Settings switch.
+ *
+ * The knob is positioned with an inline transform rather than a utility
+ * class so no class-merge can drop it, and the track uses its own colour
+ * token — the action colour is near-white in the dark appearance, which
+ * would leave a white knob on a white track.
  */
 export function Toggle({
   checked,
@@ -112,6 +118,10 @@ export function Toggle({
   label: string;
   disabled?: boolean;
 }) {
+  const TRACK = 50;
+  const KNOB = 22;
+  const INSET = 3;
+
   return (
     <button
       type="button"
@@ -120,21 +130,30 @@ export function Toggle({
       aria-label={label}
       disabled={disabled}
       onClick={() => onChange(!checked)}
+      style={{
+        width: TRACK,
+        height: KNOB + INSET * 2,
+        backgroundColor: checked
+          ? "var(--color-switch-on)"
+          : "var(--color-switch-off)",
+      }}
       className={cn(
-        "relative h-[30px] w-[52px] shrink-0 rounded-3xl border transition-colors duration-200 ease-out",
+        "relative shrink-0 rounded-3xl transition-colors duration-200 ease-out",
         "focus-visible:outline-2 focus-visible:outline-offset-2",
-        disabled && "cursor-not-allowed opacity-45",
-        checked
-          ? "border-transparent bg-action"
-          : "border-line-strong bg-ink-100 hover:bg-ink-200"
+        disabled ? "cursor-not-allowed opacity-45" : "hover:brightness-[1.06]"
       )}
     >
       <span
-        className={cn(
-          "absolute top-[3px] h-[22px] w-[22px] rounded-3xl bg-white transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
-          "shadow-[0_1px_2px_rgb(13_26_44/0.28),0_0_0_0.5px_rgb(13_26_44/0.06)]",
-          checked ? "translate-x-[25px]" : "translate-x-[3px]"
-        )}
+        aria-hidden
+        style={{
+          width: KNOB,
+          height: KNOB,
+          top: INSET,
+          left: INSET,
+          transform: `translateX(${checked ? TRACK - KNOB - INSET * 2 : 0}px)`,
+          backgroundColor: "var(--color-switch-knob)",
+        }}
+        className="absolute rounded-3xl shadow-e1 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]"
       />
     </button>
   );

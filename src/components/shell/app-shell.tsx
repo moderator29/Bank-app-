@@ -1,11 +1,12 @@
 "use client";
 
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Sidebar } from "@/components/nav/sidebar";
 import { BottomNav } from "@/components/nav/bottom-nav";
+import { SideDrawer } from "@/components/nav/side-drawer";
 import { TopBar } from "@/components/nav/top-bar";
 import { BootScreen } from "./boot-screen";
 import { useBank } from "@/lib/store";
@@ -17,6 +18,7 @@ import { useBank } from "@/lib/store";
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
   const hydrated = useBank((s) => s.hydrated);
   const stage = useBank((s) => s.authStage);
 
@@ -33,7 +35,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <Sidebar />
       <div className="lg:pl-[248px]">
         <div className="mx-auto w-full max-w-6xl px-4 pb-28 sm:px-6 lg:px-8 lg:pb-12">
-          <TopBar />
+          <TopBar onMenu={() => setMenuOpen(true)} />
           <AnimatePresence mode="wait" initial={false}>
             <motion.main
               key={pathname}
@@ -48,6 +50,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </div>
       <BottomNav />
+      <SideDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 }

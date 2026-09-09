@@ -95,7 +95,7 @@ export default function DepositTransferPage() {
         </Field>
 
         <div className="flex justify-center py-1">
-          <span className="flex h-8 w-8 items-center justify-center rounded-3xl border border-line bg-surface text-ink-400 shadow-e1">
+          <span className="flex h-8 w-8 items-center justify-center edge glass-panel relative rounded-3xl text-ink-400">
             <ArrowDown className="h-4 w-4" />
           </span>
         </div>
@@ -123,7 +123,7 @@ export default function DepositTransferPage() {
                 key={q}
                 type="button"
                 onClick={() => setAmount(String(q))}
-                className="press tnum flex-1 rounded-sm border border-line-strong bg-surface py-2 text-xs font-semibold text-ink-600 hover:border-ink-300"
+                className="press tnum flex-1 rounded-sm border border-line-strong bg-surface/55 py-2 backdrop-blur-sm text-xs font-semibold text-ink-600 hover:border-ink-300"
               >
                 {money(q, { compact: true })}
               </button>

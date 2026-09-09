@@ -9,7 +9,7 @@ const ACTIONS = [
   { label: "Transfer", href: "/payments/transfer", icon: ArrowLeftRight },
   { label: "Send", href: "/payments/send", icon: Send },
   { label: "Pay bills", href: "/payments/bills", icon: Receipt },
-  { label: "Add money", href: "/deposit", icon: Plus },
+  { label: "Deposit", href: "/deposit", icon: Plus },
   { label: "Cards", href: "/cards", icon: CreditCard },
 ];
 
@@ -31,7 +31,7 @@ export function QuickActions({ className }: { className?: string }) {
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-900/6 text-ink-800">
               <action.icon className="h-[18px] w-[18px]" />
             </span>
-            <span className="text-center text-[11px] font-semibold leading-tight text-ink-700">
+            <span className="whitespace-nowrap text-center text-[11px] font-semibold leading-tight text-ink-700">
               {action.label}
             </span>
           </Link>

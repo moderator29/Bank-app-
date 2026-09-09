@@ -21,7 +21,7 @@ export function Segmented<T extends string>({
     <div
       role="tablist"
       className={cn(
-        "no-scrollbar flex gap-1 overflow-x-auto rounded-md border border-line bg-surface-sunken p-1",
+        "no-scrollbar edge glass-sunken relative flex gap-1 overflow-x-auto rounded-md p-1",
         className
       )}
     >
@@ -42,7 +42,7 @@ export function Segmented<T extends string>({
               <motion.span
                 layoutId={`${id}-seg`}
                 transition={{ type: "spring", stiffness: 420, damping: 34 }}
-                className="absolute inset-0 rounded-sm border border-line bg-surface shadow-e1"
+                className="absolute inset-0 rounded-sm border border-brass-400/25 bg-surface/85 shadow-e1"
               />
             )}
             <span className="relative z-10">{o.label}</span>

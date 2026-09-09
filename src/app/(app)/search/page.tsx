@@ -178,7 +178,7 @@ export default function SearchPage() {
                 <button
                   key={s}
                   onClick={() => setRaw(s)}
-                  className="press rounded-sm border border-line-strong bg-surface px-3 py-2 text-sm font-semibold text-ink-600 hover:border-ink-300 hover:text-ink-900"
+                  className="press rounded-sm border border-line-strong bg-surface/55 px-3 py-2 backdrop-blur-sm text-sm font-semibold text-ink-600 hover:border-ink-300 hover:text-ink-900"
                 >
                   {s}
                 </button>

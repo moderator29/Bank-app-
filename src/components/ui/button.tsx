@@ -18,8 +18,8 @@ const button = cva(
         brass:
           "bg-brass-400 text-[#0a1422] shadow-e2 hover:bg-brass-300",
         secondary:
-          "border border-line-strong bg-surface text-ink-800 shadow-e1 hover:bg-ink-25 hover:border-ink-200",
-        subtle: "bg-ink-50 text-ink-700 hover:bg-ink-100",
+          "edge glass-panel relative text-ink-800 hover:brightness-[1.03]",
+        subtle: "edge glass-sunken relative text-ink-700 hover:brightness-[1.03]",
         ghost: "text-ink-500 hover:bg-ink-50 hover:text-ink-800",
         onNavy:
           "border border-white/15 bg-white/10 text-white backdrop-blur-sm hover:bg-white/16",

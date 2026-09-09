@@ -28,8 +28,8 @@ export function PickRow({
       className={cn(
         "press flex w-full items-center gap-3 rounded-xl border px-3.5 py-3 text-left transition-colors",
         active
-          ? "border-ink-900 bg-ink-25 shadow-e1"
-          : "border-line bg-surface hover:border-line-strong"
+          ? "border-brass-400/60 bg-brass-400/8 shadow-e2"
+          : "border-line bg-surface/55 backdrop-blur-sm hover:border-line-strong"
       )}
     >
       <span

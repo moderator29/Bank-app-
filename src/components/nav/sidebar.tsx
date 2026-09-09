@@ -63,7 +63,7 @@ export function Sidebar() {
 
       <Link
         href="/profile"
-        className="press m-3 flex items-center gap-3 rounded-xl border border-line bg-surface-sunken p-3 hover:border-line-strong"
+        className="press m-3 flex items-center gap-3 edge glass-sunken relative rounded-xl p-3 hover:brightness-[1.03]"
       >
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-ink-900 text-xs font-semibold text-brass-200">
           {initials(user.name)}

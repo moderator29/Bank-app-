@@ -682,12 +682,23 @@ export const useBank = create<BankState>()(
     }),
     {
       name: "auremont-bank",
-      version: 3,
+      version: 5,
       // Bumping the version re-seeds security material on existing sessions.
       migrate: (persisted, from) => {
         const state = persisted as Partial<BankState> | undefined;
-        if (state && from < 3) {
-          return { ...state, passcode: AUTH_PASSCODE } as unknown as BankState;
+        if (state && from < 5) {
+          // Security material, account identity and appearance are re-seeded.
+          return {
+            ...state,
+            passcode: AUTH_PASSCODE,
+            user: DEMO_USER,
+            cards: seedCards(DEMO_USER.name),
+            preferences: {
+              ...DEFAULT_PREFERENCES,
+              ...(state.preferences ?? {}),
+              theme: DEFAULT_PREFERENCES.theme,
+            },
+          } as unknown as BankState;
         }
         return persisted as BankState;
       },

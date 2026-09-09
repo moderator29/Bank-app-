@@ -1,5 +1,8 @@
 import {
   ArrowLeftRight,
+  Bell,
+  Building2,
+  CalendarClock,
   ChartPie,
   CreditCard,
   FileText,
@@ -9,6 +12,7 @@ import {
   ListOrdered,
   Plus,
   Receipt,
+  Repeat,
   Settings,
   ShieldCheck,
   UserRound,
@@ -23,13 +27,53 @@ export interface NavItem {
   match?: string[];
 }
 
-/** Five tabs, and only five — everything else lives behind a hub. */
+/**
+ * Four tabs in the capsule. Search sits in its own detached button beside it,
+ * and everything else lives in the drawer — so the bar never crowds.
+ */
 export const tabNav: NavItem[] = [
   { label: "Home", href: "/home", icon: House },
   { label: "Accounts", href: "/accounts", icon: Landmark, match: ["/accounts", "/cards"] },
   { label: "Pay", href: "/payments", icon: ArrowLeftRight, match: ["/payments", "/deposit"] },
   { label: "Activity", href: "/activity", icon: ListOrdered, match: ["/activity", "/insights"] },
-  { label: "Profile", href: "/profile", icon: UserRound, match: ["/profile", "/settings", "/security", "/support", "/documents"] },
+];
+
+/** The drawer's grouped navigation — the full surface of the product. */
+export const drawerGroups: { label: string; items: NavItem[] }[] = [
+  {
+    label: "Banking",
+    items: [
+      { label: "Accounts", href: "/accounts", icon: Landmark },
+      { label: "Cards", href: "/cards", icon: CreditCard },
+      { label: "Linked banks", href: "/accounts/external", icon: Building2 },
+    ],
+  },
+  {
+    label: "Money",
+    items: [
+      { label: "Payments", href: "/payments", icon: ArrowLeftRight },
+      { label: "Bills", href: "/payments/bills", icon: Receipt },
+      { label: "Add money", href: "/deposit", icon: Plus },
+      { label: "Scheduled", href: "/payments/scheduled", icon: CalendarClock },
+    ],
+  },
+  {
+    label: "Discover",
+    items: [
+      { label: "Insights", href: "/insights", icon: ChartPie },
+      { label: "Recurring", href: "/insights/subscriptions", icon: Repeat },
+      { label: "Documents", href: "/documents", icon: FileText },
+    ],
+  },
+  {
+    label: "Shortcuts",
+    items: [
+      { label: "Notifications", href: "/notifications", icon: Bell },
+      { label: "Security", href: "/security", icon: ShieldCheck },
+      { label: "Settings", href: "/settings", icon: Settings },
+      { label: "Live chat", href: "/support/chat", icon: Headphones },
+    ],
+  },
 ];
 
 export const sidebarGroups: { label: string; items: NavItem[] }[] = [

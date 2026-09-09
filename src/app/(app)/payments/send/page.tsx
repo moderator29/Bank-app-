@@ -158,7 +158,7 @@ export default function SendMoneyPage() {
               <button
                 type="button"
                 onClick={() => setAddOpen(true)}
-                className="press flex w-full items-center gap-3 rounded-xl border border-dashed border-line-strong bg-surface-sunken px-3.5 py-3 text-left hover:border-ink-300"
+                className="press flex w-full items-center gap-3 edge glass-sunken relative rounded-xl border-dashed px-3.5 py-3 text-left hover:border-ink-300"
               >
                 <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-ink-50 text-ink-500">
                   <Plus className="h-[18px] w-[18px]" />
@@ -194,7 +194,7 @@ export default function SendMoneyPage() {
                 key={q}
                 type="button"
                 onClick={() => setAmount(String(q))}
-                className="press tnum flex-1 rounded-sm border border-line-strong bg-surface py-2 text-xs font-semibold text-ink-600 hover:border-ink-300"
+                className="press tnum flex-1 rounded-sm border border-line-strong bg-surface/55 py-2 backdrop-blur-sm text-xs font-semibold text-ink-600 hover:border-ink-300"
               >
                 {money(q)}
               </button>
@@ -253,7 +253,7 @@ export default function SendMoneyPage() {
               placeholder={kind === "person" ? "(704) 555-0100" : "Acct 44192"}
             />
           </Field>
-          <div className="flex items-start gap-2.5 rounded-md border border-line bg-surface-sunken px-3.5 py-3">
+          <div className="flex items-start gap-2.5 edge glass-sunken relative rounded-md px-3.5 py-3">
             <Star className="mt-0.5 h-4 w-4 shrink-0 text-brass-500" />
             <p className="text-xs leading-relaxed text-ink-400">
               Only add recipients you know. Auremont can&apos;t recover money sent to the wrong

@@ -172,7 +172,7 @@ export default function ActivityPage() {
             <button
               key={chip.key}
               onClick={chip.clear}
-              className="press inline-flex items-center gap-1.5 rounded-xs border border-line-strong bg-surface px-2.5 py-1.5 text-2xs font-semibold text-ink-600 hover:border-ink-300"
+              className="press inline-flex items-center gap-1.5 rounded-xs border border-line-strong bg-surface/55 px-2.5 py-1.5 backdrop-blur-sm text-2xs font-semibold text-ink-600 hover:border-ink-300"
             >
               {chip.label}
               <X className="h-3 w-3" />

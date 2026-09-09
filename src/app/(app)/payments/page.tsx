@@ -101,7 +101,7 @@ export default function PaymentsPage() {
               <Link
                 key={payee.id}
                 href={`/payments/send?payee=${payee.id}`}
-                className="press flex w-[92px] shrink-0 flex-col items-center gap-2 rounded-xl border border-line bg-surface px-2 py-3.5 shadow-e1 hover:border-line-strong"
+                className="press flex w-[92px] shrink-0 flex-col items-center gap-2 edge glass-panel relative rounded-xl px-2 py-3.5 hover:brightness-[1.03]"
               >
                 <Avatar name={payee.name} />
                 <span className="line-clamp-2 text-center text-[11px] font-semibold leading-tight text-ink-700">
@@ -111,7 +111,7 @@ export default function PaymentsPage() {
             ))}
             <Link
               href="/payments/recipients"
-              className="press flex w-[92px] shrink-0 flex-col items-center gap-2 rounded-xl border border-dashed border-line-strong bg-surface-sunken px-2 py-3.5 hover:border-ink-300"
+              className="press flex w-[92px] shrink-0 flex-col items-center gap-2 edge glass-sunken relative rounded-xl border-dashed px-2 py-3.5 hover:border-ink-300"
             >
               <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-ink-50 text-ink-500">
                 <Plus className="h-[18px] w-[18px]" />

@@ -4,12 +4,12 @@ import { useId } from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * The Auremont seal.
+ * The Auremont emblem.
  *
- * Auremont takes its name from aurum — gold. The mark is that idea struck as
- * a coin: a brass ring holding an apex "A" whose crossbar sweeps into the
- * curve of a "U", so the monogram reads AU as one continuous stroke. A single
- * specular sweep gives the metal its shine; nothing is striped or repeated.
+ * Auremont is aurum + mont — gold mountain. The mark is exactly that, drawn
+ * as struck metal: two faceted peaks catching light from different angles,
+ * a thin brass arc rising behind them, and a level ledger line at the base.
+ * No letterforms. Gradient ids are per-instance so many marks share a page.
  */
 export function LogoMark({
   className,
@@ -20,14 +20,15 @@ export function LogoMark({
 }) {
   const uid = useId().replace(/:/g, "");
   const field = `f${uid}`;
-  const metal = `m${uid}`;
+  const lit = `l${uid}`;
+  const shade = `s${uid}`;
+  const arc = `a${uid}`;
   const gloss = `g${uid}`;
-  const ring = `r${uid}`;
 
   const fieldFill =
     tone === "navy" ? `url(#${field})` : tone === "light" ? "#ffffff" : "transparent";
-  const strokeFill = tone === "light" ? "#966a20" : `url(#${metal})`;
-  const ringStroke = tone === "light" ? "rgba(150,106,32,0.35)" : `url(#${ring})`;
+  const litFill = tone === "light" ? "#b8862c" : `url(#${lit})`;
+  const shadeFill = tone === "light" ? "#8a6420" : `url(#${shade})`;
 
   return (
     <svg
@@ -38,44 +39,57 @@ export function LogoMark({
       aria-label="Auremont"
     >
       <defs>
-        <linearGradient id={field} x1="8" y1="0" x2="40" y2="48">
-          <stop offset="0%" stopColor="#2c4b70" />
-          <stop offset="44%" stopColor="#122139" />
-          <stop offset="100%" stopColor="#050c17" />
+        <linearGradient id={field} x1="6" y1="0" x2="42" y2="48">
+          <stop offset="0%" stopColor="#2e5079" />
+          <stop offset="42%" stopColor="#122139" />
+          <stop offset="100%" stopColor="#050b15" />
         </linearGradient>
-        <linearGradient id={metal} x1="14" y1="10" x2="34" y2="38">
-          <stop offset="0%" stopColor="#fdf3dc" />
-          <stop offset="26%" stopColor="#eed19a" />
-          <stop offset="55%" stopColor="#d4a94f" />
-          <stop offset="78%" stopColor="#b8862c" />
-          <stop offset="100%" stopColor="#f0dcae" />
+        {/* The sunlit face */}
+        <linearGradient id={lit} x1="16" y1="12" x2="30" y2="36">
+          <stop offset="0%" stopColor="#fff6e2" />
+          <stop offset="34%" stopColor="#f0d9a6" />
+          <stop offset="100%" stopColor="#d4a94f" />
         </linearGradient>
-        <linearGradient id={ring} x1="10" y1="8" x2="38" y2="42">
-          <stop offset="0%" stopColor="#f8e7be" stopOpacity="0.95" />
-          <stop offset="50%" stopColor="#c9962f" stopOpacity="0.55" />
-          <stop offset="100%" stopColor="#f0dcae" stopOpacity="0.9" />
+        {/* The face turned away from the light */}
+        <linearGradient id={shade} x1="26" y1="16" x2="38" y2="38">
+          <stop offset="0%" stopColor="#c9962f" />
+          <stop offset="60%" stopColor="#a2761f" />
+          <stop offset="100%" stopColor="#6f4e17" />
         </linearGradient>
-        <linearGradient id={gloss} x1="4" y1="0" x2="30" y2="30">
-          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.22" />
-          <stop offset="58%" stopColor="#ffffff" stopOpacity="0" />
+        <linearGradient id={arc} x1="10" y1="10" x2="38" y2="24">
+          <stop offset="0%" stopColor="#f8e7be" stopOpacity="0.15" />
+          <stop offset="50%" stopColor="#f0d9a6" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#d4a94f" stopOpacity="0.2" />
+        </linearGradient>
+        <linearGradient id={gloss} x1="2" y1="0" x2="28" y2="28">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.2" />
+          <stop offset="62%" stopColor="#ffffff" stopOpacity="0" />
         </linearGradient>
       </defs>
 
-      {/* Field */}
       <rect x="0" y="0" width="48" height="48" rx="13.5" fill={fieldFill} />
       {tone === "navy" && (
         <rect x="0" y="0" width="48" height="48" rx="13.5" fill={`url(#${gloss})`} />
       )}
 
-      {/* The seal ring */}
-      <circle cx="24" cy="24" r="17.1" stroke={ringStroke} strokeWidth="1.15" fill="none" />
+      {/* The rising arc behind the range */}
+      <path
+        d="M9.4 22.6 A15.4 15.4 0 0 1 38.6 22.6"
+        stroke={`url(#${arc})`}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        fill="none"
+      />
 
-      {/* AU as one stroke: the apex, its crossbar, and the cup of the U. */}
-      <g fill={strokeFill}>
-        <path d="M17.35 32.9 H13.5 L20.2 14.2 h3.5 l6.7 18.7 h-3.85 l-1.62 -4.72 h-5.44 l1.02 -3.02 h3.39 L21.95 19.6 Z" />
-        <path d="M30.05 14.2 h3.4 v11.42 c0 2.34 -1.02 4.06 -2.86 5.06 l-1.4 -3.06 c0.57 -0.47 0.86 -1.17 0.86 -2.1 Z" />
-        <path d="M24.35 33.2 c3.36 0 6.02 -1.36 7.62 -3.72 l-2.7 -1.94 c-1.02 1.5 -2.66 2.32 -4.92 2.32 z" />
-      </g>
+      {/* Back peak — the shaded facet */}
+      <path d="M27.2 15.6 L39.4 33.2 H23.1 Z" fill={shadeFill} />
+      {/* Front peak — the lit facet, overlapping the back one */}
+      <path d="M18.4 19.4 L30.1 33.2 H8.6 Z" fill={litFill} />
+      {/* Snowline notch, cut from the front face */}
+      <path d="M18.4 19.4 L22.6 24.4 L20.4 26.1 L18.4 23.7 L16.4 26.1 L14.2 24.4 Z" fill="#fffaf0" opacity="0.85" />
+
+      {/* Ledger line */}
+      <rect x="8.6" y="35.4" width="30.8" height="1.9" rx="0.95" fill={litFill} opacity="0.9" />
     </svg>
   );
 }
