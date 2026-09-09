@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+@theme {
+  --color-emerald-950: #022c22;
+  --color-brand-50: #f0faf5;
+  --color-brand-100: #dcf5e9;
+  --color-brand-200: #b9ead4;
+  --color-brand-300: #86dab7;
+  --color-brand-400: #4cc294;
+  --color-brand-500: #24a878;
+  --color-brand-600: #168860;
+  --color-brand-700: #126d4f;
+  --color-brand-800: #115740;
+  --color-brand-900: #0f4736;
+  --color-brand-950: #06281e;
+  --color-ink-900: #0d1f1a;
+  --color-ink-600: #43594f;
+  --color-ink-400: #7d918a;
+  --color-mist: #f4f9f6;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --radius-4xl: 2rem;
+  --shadow-float: 0 8px 30px -6px rgb(6 40 30 / 0.08),
+    0 2px 8px -2px rgb(6 40 30 / 0.04);
+  --shadow-float-lg: 0 24px 60px -12px rgb(6 40 30 / 0.14),
+    0 4px 16px -4px rgb(6 40 30 / 0.06);
+  --animate-shimmer: shimmer 2.5s linear infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 85% -10%, rgb(36 168 120 / 0.08), transparent 60%),
+    radial-gradient(900px 500px at -10% 30%, rgb(76 194 148 / 0.07), transparent 55%),
+    #fafcfb;
+  color: var(--color-ink-900);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgb(36 168 120 / 0.2);
+}
+
+.glass {
+  background: rgb(255 255 255 / 0.65);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgb(255 255 255 / 0.75);
+}
+
+.glass-deep {
+  background: linear-gradient(135deg, #0f4736 0%, #115740 45%, #168860 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-deep::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(600px 240px at 80% -20%, rgb(255 255 255 / 0.14), transparent 60%),
+    radial-gradient(400px 200px at 10% 110%, rgb(134 218 183 / 0.18), transparent 55%);
+  pointer-events: none;
+}
+
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Soft emerald glass used by the swipeable announcement banner */
+.glass-emerald {
+  background: linear-gradient(
+    135deg,
+    rgb(18 109 79 / 0.9) 0%,
+    rgb(22 136 96 / 0.86) 48%,
+    rgb(36 168 120 / 0.82) 100%
+  );
+  backdrop-filter: blur(18px) saturate(1.5);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  border: 1px solid rgb(255 255 255 / 0.22);
+}
+
+.glass-emerald::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(520px 200px at 82% -30%, rgb(255 255 255 / 0.18), transparent 60%),
+    radial-gradient(360px 180px at 6% 130%, rgb(134 218 183 / 0.22), transparent 55%);
+  pointer-events: none;
+}
